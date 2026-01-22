@@ -4,6 +4,7 @@ import { HodRoutingModule } from './hod-routing-module';
 import { Dashboard } from './dashboard/dashboard';
 import { ManageClasses } from './manage-classes/manage-classes';
 import { ManageSchedules } from './manage-schedules/manage-schedules';
+import { ViewReports } from './view-reports/view-reports';
 
 @NgModule({
   declarations: [],
@@ -12,7 +13,8 @@ import { ManageSchedules } from './manage-schedules/manage-schedules';
     HodRoutingModule,
     Dashboard,
     ManageClasses,
-    ManageSchedules
+    ManageSchedules,
+    ViewReports
   ]
 })
 export class HodModule { }

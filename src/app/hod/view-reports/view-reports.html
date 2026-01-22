@@ -1,0 +1,152 @@
+<div class="view-reports">
+  <div class="no-print">
+    <div class="header">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h2>View Student Reports</h2>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
+
+    <div class="selection-container" *ngIf="!loading && !showReport">
+      <div class="form-group">
+        <label>Select Class</label>
+        <select [(ngModel)]="selectedClassId" (change)="onClassChange()" name="classId">
+          <option value="">Choose a class</option>
+          <option *ngFor="let class of allClasses" [value]="class.classId">{{ class.className }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Select Student</label>
+        <select [(ngModel)]="selectedStudentId" name="studentId" [disabled]="!selectedClassId">
+          <option value="">Choose a student</option>
+          <option *ngFor="let student of students" [value]="student.uid">{{ student.name }}</option>
+        </select>
+      </div>
+
+      <button class="view-btn" (click)="viewReport()" [disabled]="!selectedStudentId">
+        <i class="fas fa-eye"></i> View Report Card
+      </button>
+    </div>
+
+    <div class="actions" *ngIf="showReport">
+      <button class="back-to-select-btn" (click)="showReport = false">
+        <i class="fas fa-arrow-left"></i> Select Another Student
+      </button>
+      <button class="print-btn" (click)="printReport()">
+        <i class="fas fa-print"></i> Print Report
+      </button>
+    </div>
+  </div>
+
+  <div class="report-card" *ngIf="showReport && studentData">
+    <div class="report-header">
+      <div class="school-info">
+        <h1>EduTrack Pro</h1>
+        <p>Academic Report Card</p>
+      </div>
+      <div class="report-date">
+        <p>Generated: {{ today | date:'dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+
+    <div class="student-info">
+      <h3>Student Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Name:</span>
+          <span class="value">{{ studentData.name }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value">{{ studentData.email }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Class:</span>
+          <span class="value">{{ studentData.classId }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Parent Email:</span>
+          <span class="value">{{ studentData.parentEmail }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="marks-section">
+      <h3>Academic Performance</h3>
+      <table class="marks-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Exam Type</th>
+            <th>Marks Obtained</th>
+            <th>Maximum Marks</th>
+            <th>Percentage</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mark of marks">
+            <td>{{ mark.subject }}</td>
+            <td>{{ mark.examType }}</td>
+            <td>{{ mark.marks }}</td>
+            <td>{{ mark.maxMarks }}</td>
+            <td>{{ ((mark.marks / mark.maxMarks) * 100).toFixed(1) }}%</td>
+            <td>{{ mark.date }}</td>
+          </tr>
+          <tr class="total-row" *ngIf="marks.length > 0">
+            <td colspan="2"><strong>Total</strong></td>
+            <td><strong>{{ totalMarks }}</strong></td>
+            <td><strong>{{ totalMaxMarks }}</strong></td>
+            <td><strong>{{ overallPercentage }}%</strong></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="marks.length === 0" class="no-data">No marks recorded yet</p>
+    </div>
+
+    <div class="attendance-section">
+      <h3>Attendance Summary</h3>
+      <div class="attendance-grid">
+        <div class="attendance-item present">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <h4>{{ attendance.present }}</h4>
+            <p>Present</p>
+          </div>
+        </div>
+        <div class="attendance-item absent">
+          <i class="fas fa-times-circle"></i>
+          <div>
+            <h4>{{ attendance.absent }}</h4>
+            <p>Absent</p>
+          </div>
+        </div>
+        <div class="attendance-item percentage">
+          <i class="fas fa-chart-pie"></i>
+          <div>
+            <h4>{{ attendance.percentage }}%</h4>
+            <p>Attendance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-section" *ngIf="marks.length > 0">
+      <div class="grade-box">
+        <h3>Overall Grade</h3>
+        <div class="grade">{{ grade }}</div>
+        <p>{{ overallPercentage }}%</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>This is a computer-generated report card</p>
+    </div>
+  </div>
+</div>
