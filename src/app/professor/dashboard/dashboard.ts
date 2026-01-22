@@ -167,6 +167,64 @@ export class Dashboard implements OnInit {
     }
   }
 
+  async updateStudent(student: any) {
+    try {
+      const token = await this.auth.currentUser?.getIdToken();
+      
+      // First, get the current document
+      const getResponse = await fetch(
+        `https://firestore.googleapis.com/v1/projects/${environment.firebase.projectId}/databases/attendance-management/documents/users/${student.uid}`,
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+
+      if (!getResponse.ok) throw new Error('Failed to fetch student data');
+      
+      const currentDoc = await getResponse.json();
+      const allUsers = await this.loadAllUsers();
+      const parent = allUsers.find(u => u.email === student.parentEmail && u.role === 'parent');
+      
+      // Merge existing fields with updates
+      const updateData: any = {
+        uid: { stringValue: student.uid },
+        email: { stringValue: student.email },
+        role: { stringValue: 'student' },
+        name: { stringValue: student.name },
+        classId: { stringValue: student.classId || 'default_class' },
+        parentEmail: { stringValue: student.parentEmail || '' },
+        parentId: { stringValue: parent?.uid || '' }
+      };
+      
+      // Use PUT to replace the entire document
+      const updateResponse = await fetch(
+        `https://firestore.googleapis.com/v1/projects/${environment.firebase.projectId}/databases/attendance-management/documents/users/${student.uid}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            fields: updateData,
+            name: currentDoc.name
+          })
+        }
+      );
+
+      if (!updateResponse.ok) {
+        const error = await updateResponse.text();
+        throw new Error(`Update failed: ${error}`);
+      }
+      
+      await this.loadUsers();
+      alert('Student updated successfully!');
+    } catch (error: any) {
+      console.error('Update error:', error);
+      alert('Error: ' + error.message);
+    }
+  }
+
   async loadAllUsers(): Promise<UserData[]> {
     const token = await this.auth.currentUser?.getIdToken();
     const response = await fetch(

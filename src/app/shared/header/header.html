@@ -2,7 +2,7 @@
   <div class="container">
     <div class="logo" (click)="goHome()" [style.cursor]="(user$ | async) ? 'pointer' : 'default'">
       <i class="fas fa-home"></i>
-      <h1>AttendanceManagementSystem</h1>
+      <h1>EduTrack Pro</h1>
     </div>
     <nav>
       <a routerLink="/login" *ngIf="!(user$ | async)">Login</a>

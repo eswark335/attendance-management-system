@@ -22,6 +22,20 @@
     </div>
     
     <div class="card">
+      <i class="fas fa-chart-line"></i>
+      <h3>Add Marks</h3>
+      <p>Add marks for students</p>
+      <a routerLink="/professor/add-marks" class="btn">Add Marks</a>
+    </div>
+    
+    <div class="card">
+      <i class="fas fa-file-alt"></i>
+      <h3>View Reports</h3>
+      <p>View student report cards</p>
+      <a routerLink="/professor/view-reports" class="btn">View Reports</a>
+    </div>
+    
+    <div class="card">
       <i class="fas fa-user-graduate"></i>
       <h3>Students</h3>
       <p>{{ students.length }} students registered</p>
@@ -81,8 +95,9 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
+          <th>Class</th>
           <th>Parent Email</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -90,10 +105,16 @@
           <td>{{ student.name }}</td>
           <td>{{ student.email }}</td>
           <td>
+            <select [(ngModel)]="student.classId" class="inline-input">
+              <option value="default_class">Default Class</option>
+              <option *ngFor="let class of myClasses" [value]="class.classId">{{ class.className }}</option>
+            </select>
+          </td>
+          <td>
             <input type="email" [(ngModel)]="student.parentEmail" placeholder="Enter parent email" class="inline-input">
           </td>
           <td>
-            <button class="update-btn" (click)="updateStudentParent(student)">
+            <button class="update-btn" (click)="updateStudent(student)">
               <i class="fas fa-save"></i> Update
             </button>
           </td>

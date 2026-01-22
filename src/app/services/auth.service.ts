@@ -56,7 +56,8 @@ export class AuthService {
                   uid: { stringValue: userData.uid },
                   email: { stringValue: userData.email },
                   role: { stringValue: userData.role },
-                  name: { stringValue: userData.name }
+                  name: { stringValue: userData.name },
+                  classId: { stringValue: 'default_class' }
                 }
               })
             }
@@ -94,6 +95,17 @@ async register(email: string, password: string, name: string, role: UserRole) {
 
     console.log('Step 4: Attempting to write to Firestore...', userData);
     
+    const fields: any = {
+      uid: { stringValue: userData.uid },
+      email: { stringValue: userData.email },
+      role: { stringValue: userData.role },
+      name: { stringValue: userData.name }
+    };
+
+    if (role === 'student') {
+      fields.classId = { stringValue: 'default_class' };
+    }
+    
     // Use REST API to write
     const response = await fetch(
       `https://firestore.googleapis.com/v1/projects/${environment.firebase.projectId}/databases/attendance-management/documents/users?documentId=${credential.user.uid}`,
@@ -103,14 +115,7 @@ async register(email: string, password: string, name: string, role: UserRole) {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          fields: {
-            uid: { stringValue: userData.uid },
-            email: { stringValue: userData.email },
-            role: { stringValue: userData.role },
-            name: { stringValue: userData.name }
-          }
-        })
+        body: JSON.stringify({ fields })
       }
     );
 

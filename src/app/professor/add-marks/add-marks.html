@@ -1,0 +1,61 @@
+<div class="add-marks">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2>Add Marks</h2>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+
+  <div class="form-container" *ngIf="!loading">
+    <form (ngSubmit)="submitMarks()">
+      <div class="form-group">
+        <label>Select Class</label>
+        <select [(ngModel)]="selectedClassId" (change)="onClassChange()" name="classId" required>
+          <option value="">Choose a class</option>
+          <option *ngFor="let class of myClasses" [value]="class.classId">{{ class.className }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Select Student</label>
+        <select [(ngModel)]="selectedStudentId" name="studentId" required [disabled]="!selectedClassId">
+          <option value="">Choose a student</option>
+          <option *ngFor="let student of students" [value]="student.uid">{{ student.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" [(ngModel)]="subject" name="subject" placeholder="e.g., Mathematics" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Marks Obtained</label>
+          <input type="number" [(ngModel)]="marks" name="marks" min="0" [max]="maxMarks" required>
+        </div>
+
+        <div class="form-group">
+          <label>Maximum Marks</label>
+          <input type="number" [(ngModel)]="maxMarks" name="maxMarks" min="1" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Exam Type</label>
+        <select [(ngModel)]="examType" name="examType" required>
+          <option *ngFor="let type of examTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="submitting">
+        <i class="fas" [class.fa-spinner]="submitting" [class.fa-spin]="submitting" [class.fa-save]="!submitting"></i>
+        {{ submitting ? 'Submitting...' : 'Add Marks' }}
+      </button>
+    </form>
+  </div>
+</div>

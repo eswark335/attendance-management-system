@@ -1,6 +1,12 @@
 <div class="dashboard">
   <h2>Parent Dashboard</h2>
   
+  <div class="action-bar">
+    <a routerLink="/parent/view-reports" class="view-reports-btn">
+      <i class="fas fa-file-alt"></i> View Children Reports
+    </a>
+  </div>
+  
   <div class="loading" *ngIf="loading">
     <i class="fas fa-spinner fa-spin"></i> Loading...
   </div>

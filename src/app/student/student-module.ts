@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StudentRoutingModule } from './student-routing-module';
 import { Dashboard } from './dashboard/dashboard';
 import { MyAttendance } from './my-attendance/my-attendance';
+import { ReportCard } from './report-card/report-card';
 
 @NgModule({
   declarations: [],
@@ -10,7 +11,8 @@ import { MyAttendance } from './my-attendance/my-attendance';
     CommonModule,
     StudentRoutingModule,
     Dashboard,
-    MyAttendance
+    MyAttendance,
+    ReportCard
   ]
 })
 export class StudentModule { }
