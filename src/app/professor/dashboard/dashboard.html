@@ -1,0 +1,127 @@
+<div class="dashboard">
+  <h2>Professor Dashboard</h2>
+  
+  <div class="my-classes-section">
+    <h3><i class="fas fa-chalkboard-teacher"></i> My Classes</h3>
+    <div class="classes-list">
+      <div class="class-chip" *ngFor="let class of myClasses" 
+           [class.selected]="selectedClassId === class.classId"
+           (click)="selectedClassId = class.classId">
+        {{ class.className }}
+      </div>
+      <p *ngIf="myClasses.length === 0" class="no-data">No classes assigned yet</p>
+    </div>
+  </div>
+  
+  <div class="cards">
+    <div class="card">
+      <i class="fas fa-clipboard-check"></i>
+      <h3>Mark Attendance</h3>
+      <p>Mark attendance for your classes</p>
+      <a routerLink="/professor/attendance" class="btn">Mark Attendance</a>
+    </div>
+    
+    <div class="card">
+      <i class="fas fa-user-graduate"></i>
+      <h3>Students</h3>
+      <p>{{ students.length }} students registered</p>
+      <button class="btn" (click)="showStudents = !showStudents">View Students</button>
+      <button class="btn" (click)="showAddStudent = !showAddStudent" style="margin-top: 10px;">Add Student</button>
+    </div>
+    
+    <div class="card">
+      <i class="fas fa-users"></i>
+      <h3>Parents</h3>
+      <p>{{ parents.length }} parents registered</p>
+      <button class="btn" (click)="showParents = !showParents">View Parents</button>
+      <button class="btn" (click)="showAddParent = !showAddParent" style="margin-top: 10px;">Add Parent</button>
+    </div>
+  </div>
+
+  <div class="form-container" *ngIf="showAddStudent">
+    <h3><i class="fas fa-user-graduate"></i> Add New Student</h3>
+    <form (ngSubmit)="addStudent()">
+      <select [(ngModel)]="selectedClassId" name="classId" required>
+        <option value="">Select Class</option>
+        <option *ngFor="let class of myClasses" [value]="class.classId">{{ class.className }}</option>
+      </select>
+      <input type="text" [(ngModel)]="newStudent.name" name="name" placeholder="Student Name" required>
+      <input type="email" [(ngModel)]="newStudent.email" name="email" placeholder="Email" required>
+      <input type="password" [(ngModel)]="newStudent.password" name="password" placeholder="Password" required>
+      <input type="email" [(ngModel)]="newStudent.parentEmail" name="parentEmail" placeholder="Parent Email (optional)">
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create Student</button>
+        <button type="button" class="cancel-btn" (click)="showAddStudent = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="form-container" *ngIf="showAddParent">
+    <h3><i class="fas fa-users"></i> Add New Parent</h3>
+    <form (ngSubmit)="addParent()">
+      <input type="text" [(ngModel)]="newParent.name" name="name" placeholder="Parent Name" required>
+      <input type="email" [(ngModel)]="newParent.email" name="email" placeholder="Email" required>
+      <input type="password" [(ngModel)]="newParent.password" name="password" placeholder="Password" required>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create Parent</button>
+        <button type="button" class="cancel-btn" (click)="showAddParent = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="list-container" *ngIf="showStudents">
+    <div class="list-header">
+      <h3><i class="fas fa-user-graduate"></i> Students List</h3>
+      <button class="close-btn" (click)="showStudents = false">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Parent Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{ student.name }}</td>
+          <td>{{ student.email }}</td>
+          <td>
+            <input type="email" [(ngModel)]="student.parentEmail" placeholder="Enter parent email" class="inline-input">
+          </td>
+          <td>
+            <button class="update-btn" (click)="updateStudentParent(student)">
+              <i class="fas fa-save"></i> Update
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="list-container" *ngIf="showParents">
+    <div class="list-header">
+      <h3><i class="fas fa-users"></i> Parents List</h3>
+      <button class="close-btn" (click)="showParents = false">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let parent of parents">
+          <td>{{ parent.name }}</td>
+          <td>{{ parent.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

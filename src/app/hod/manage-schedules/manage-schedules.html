@@ -1,0 +1,65 @@
+<div class="manage-schedules">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2>Manage Schedules</h2>
+    <button class="add-btn" (click)="showAddSchedule = !showAddSchedule">
+      <i class="fas fa-plus"></i> Create Schedule
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+
+  <div *ngIf="!loading">
+
+  <div class="form-container" *ngIf="showAddSchedule">
+    <h3><i class="fas fa-calendar-alt"></i> Create New Schedule</h3>
+    <form (ngSubmit)="addSchedule()">
+      <select [(ngModel)]="newSchedule.classId" name="classId" required>
+        <option value="">Select Class</option>
+        <option *ngFor="let class of classes" [value]="class.classId">{{ class.className }}</option>
+      </select>
+      
+      <select [(ngModel)]="newSchedule.professorId" name="professorId" required>
+        <option value="">Select Professor</option>
+        <option *ngFor="let prof of professors" [value]="prof.uid">{{ prof.name }}</option>
+      </select>
+      
+      <select [(ngModel)]="newSchedule.dayOfWeek" name="dayOfWeek" required>
+        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+      </select>
+      
+      <input type="text" [(ngModel)]="newSchedule.subject" name="subject" placeholder="Subject (e.g., Mathematics)" required>
+      
+      <div class="time-inputs">
+        <input type="time" [(ngModel)]="newSchedule.startTime" name="startTime" placeholder="Start Time" required>
+        <input type="time" [(ngModel)]="newSchedule.endTime" name="endTime" placeholder="End Time" required>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create Schedule</button>
+        <button type="button" class="cancel-btn" (click)="showAddSchedule = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="schedules-list">
+    <h3><i class="fas fa-calendar-week"></i> Existing Schedules ({{ schedules.length }})</h3>
+    <div class="schedule-card" *ngFor="let schedule of schedules">
+      <div class="schedule-header">
+        <h4>{{ schedule.subject }}</h4>
+        <span class="day-badge">{{ schedule.dayOfWeek }}</span>
+      </div>
+      <div class="schedule-details">
+        <p><i class="fas fa-school"></i> {{ getClassName(schedule.classId) }}</p>
+        <p><i class="fas fa-chalkboard-teacher"></i> {{ getProfessorName(schedule.professorId) }}</p>
+        <p><i class="fas fa-clock"></i> {{ schedule.startTime }} - {{ schedule.endTime }}</p>
+      </div>
+    </div>
+    <p class="no-data" *ngIf="schedules.length === 0">No schedules created yet</p>
+  </div>
+  </div>
+</div>

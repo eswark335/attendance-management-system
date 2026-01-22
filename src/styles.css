@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h2 {
+    font-size: 24px !important;
+  }
+  
+  h3 {
+    font-size: 18px !important;
+  }
+  
+  .dashboard, .mark-attendance, .my-attendance, .manage-classes, .manage-schedules {
+    padding: 20px !important;
+  }
+  
+  .cards, .children-grid, .classes-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .selection-section {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .stats-cards {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr !important;
+  }
+  
+  table {
+    font-size: 12px;
+  }
+  
+  th, td {
+    padding: 10px 8px !important;
+  }
+  
+  .student-card {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .attendance-toggle {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .header {
+    flex-wrap: wrap;
+  }
+}

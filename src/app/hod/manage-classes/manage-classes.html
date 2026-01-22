@@ -1,0 +1,55 @@
+<div class="manage-classes">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2>Manage Classes</h2>
+    <button class="add-btn" (click)="showAddClass = !showAddClass">
+      <i class="fas fa-plus"></i> Create Class
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+
+  <div *ngIf="!loading">
+
+  <div class="form-container" *ngIf="showAddClass">
+    <h3><i class="fas fa-chalkboard"></i> Create New Class</h3>
+    <form (ngSubmit)="addClass()">
+      <input type="text" [(ngModel)]="newClassName" name="className" placeholder="Class Name (e.g., Computer Science A)" required>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create Class</button>
+        <button type="button" class="cancel-btn" (click)="showAddClass = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="classes-grid">
+    <div class="class-card" *ngFor="let class of classes">
+      <div class="class-icon">
+        <i class="fas fa-chalkboard-teacher"></i>
+      </div>
+      <h3>{{ class.className }}</h3>
+      <p>Class ID: {{ class.classId }}</p>
+      <button class="btn" (click)="openAssignProfessor(class.classId)">
+        <i class="fas fa-user-plus"></i> Assign Professor
+      </button>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showAssignProfessor" (click)="showAssignProfessor = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3><i class="fas fa-user-tie"></i> Assign Professor</h3>
+      <select [(ngModel)]="selectedProfessorId" name="professor">
+        <option value="">Select Professor</option>
+        <option *ngFor="let prof of professors" [value]="prof.uid">{{ prof.name }} ({{ prof.email }})</option>
+      </select>
+      <div class="form-actions">
+        <button class="submit-btn" (click)="assignProfessor()">Assign</button>
+        <button class="cancel-btn" (click)="showAssignProfessor = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

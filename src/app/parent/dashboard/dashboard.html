@@ -1,0 +1,45 @@
+<div class="dashboard">
+  <h2>Parent Dashboard</h2>
+  
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+
+  <div *ngIf="!loading">
+    <div class="children-grid">
+      <div class="child-card" *ngFor="let child of children">
+        <div class="child-header">
+          <i class="fas fa-user-graduate"></i>
+          <h3>{{ child.name }}</h3>
+        </div>
+        <p class="child-email">{{ child.email }}</p>
+        
+        <div class="stats">
+          <div class="stat present">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <h4>{{ child.presentCount }}</h4>
+              <p>Present</p>
+            </div>
+          </div>
+          <div class="stat absent">
+            <i class="fas fa-times-circle"></i>
+            <div>
+              <h4>{{ child.absentCount }}</h4>
+              <p>Absent</p>
+            </div>
+          </div>
+          <div class="stat percentage">
+            <i class="fas fa-chart-pie"></i>
+            <div>
+              <h4>{{ child.attendancePercentage }}%</h4>
+              <p>Attendance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <p class="no-data" *ngIf="children.length === 0">No children linked to your account</p>
+  </div>
+</div>

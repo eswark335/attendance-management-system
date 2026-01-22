@@ -1,0 +1,47 @@
+<div class="my-attendance">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2>My Attendance</h2>
+  </div>
+  
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+  
+  <div *ngIf="!loading">
+    <div class="stats-cards">
+      <div class="stat-card present">
+        <i class="fas fa-check-circle"></i>
+        <h3>{{ presentCount }}</h3>
+        <p>Present</p>
+      </div>
+      <div class="stat-card absent">
+        <i class="fas fa-times-circle"></i>
+        <h3>{{ absentCount }}</h3>
+        <p>Absent</p>
+      </div>
+      <div class="stat-card percentage">
+        <i class="fas fa-chart-pie"></i>
+        <h3>{{ attendancePercentage }}%</h3>
+        <p>Attendance</p>
+      </div>
+    </div>
+
+    <div class="attendance-list">
+      <h3><i class="fas fa-history"></i> Attendance History</h3>
+      <div class="attendance-record" *ngFor="let record of attendanceRecords">
+        <div class="record-date">
+          <i class="fas fa-calendar"></i>
+          <span>{{ record.date }}</span>
+        </div>
+        <div class="record-status" [class.present]="record.status === 'present'" [class.absent]="record.status === 'absent'">
+          <i [class.fa-check]="record.status === 'present'" [class.fa-times]="record.status === 'absent'" class="fas"></i>
+          {{ record.status | titlecase }}
+        </div>
+      </div>
+      <p *ngIf="attendanceRecords.length === 0" class="no-data">No attendance records yet</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="mark-attendance">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <h2>Mark Attendance</h2>
+  </div>
+  
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading...
+  </div>
+  
+  <div *ngIf="!loading">
+    <div class="selection-section">
+      <div class="select-group">
+        <label>Select Class</label>
+        <select [(ngModel)]="selectedClassId" (change)="onClassChange()" name="classId">
+          <option value="">Choose a class</option>
+          <option *ngFor="let class of myClasses" [value]="class.classId">{{ class.className }}</option>
+        </select>
+      </div>
+      
+      <div class="select-group">
+        <label>Select Schedule/Subject</label>
+        <select [(ngModel)]="selectedScheduleId" name="scheduleId">
+          <option value="">Choose schedule</option>
+          <option *ngFor="let sch of filteredSchedules" [value]="sch.scheduleId">
+            {{ sch.subject }} ({{ sch.dayOfWeek }} {{ sch.startTime }}-{{ sch.endTime }})
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="students-list" *ngIf="students.length > 0">
+      <h3><i class="fas fa-users"></i> Students ({{ students.length }})</h3>
+      <div class="student-card" *ngFor="let student of students">
+        <div class="student-info">
+          <i class="fas fa-user-circle"></i>
+          <div>
+            <h4>{{ student.name }}</h4>
+            <p>{{ student.email }}</p>
+          </div>
+        </div>
+        <div class="attendance-toggle">
+          <button 
+            [class.active]="attendanceMap[student.uid] === 'present'"
+            (click)="attendanceMap[student.uid] = 'present'"
+            class="present-btn">
+            <i class="fas fa-check"></i> Present
+          </button>
+          <button 
+            [class.active]="attendanceMap[student.uid] === 'absent'"
+            (click)="attendanceMap[student.uid] = 'absent'"
+            class="absent-btn">
+            <i class="fas fa-times"></i> Absent
+          </button>
+        </div>
+      </div>
+      
+      <button class="submit-btn" (click)="submitAttendance()" [disabled]="submitting">
+        <i class="fas" [class.fa-spinner]="submitting" [class.fa-spin]="submitting" [class.fa-save]="!submitting"></i> 
+        {{ submitting ? 'Submitting...' : 'Submit Attendance' }}
+      </button>
+    </div>
+
+    <p class="no-data" *ngIf="selectedClassId && students.length === 0 && !loadingStudents">No students found in this class</p>
+    <div class="loading" *ngIf="loadingStudents">
+      <i class="fas fa-spinner fa-spin"></i> Loading students...
+    </div>
+  </div>
+</div>

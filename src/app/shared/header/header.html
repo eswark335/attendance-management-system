@@ -1,0 +1,13 @@
+<header>
+  <div class="container">
+    <div class="logo" (click)="goHome()" [style.cursor]="(user$ | async) ? 'pointer' : 'default'">
+      <i class="fas fa-home"></i>
+      <h1>AttendanceManagementSystem</h1>
+    </div>
+    <nav>
+      <a routerLink="/login" *ngIf="!(user$ | async)">Login</a>
+      <a routerLink="/register" *ngIf="!(user$ | async)">Register</a>
+      <button *ngIf="user$ | async" (click)="logout()" class="logout-btn">Logout</button>
+    </nav>
+  </div>
+</header>

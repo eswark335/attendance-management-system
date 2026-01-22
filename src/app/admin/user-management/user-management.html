@@ -1,0 +1,47 @@
+<div class="user-management">
+  <div class="header">
+    <h2>User Management</h2>
+    <button class="add-btn" (click)="showAddForm = !showAddForm">
+      <i class="fas fa-plus"></i> Add User
+    </button>
+  </div>
+
+  <div class="add-user-form" *ngIf="showAddForm">
+    <h3>Add New User</h3>
+    <form (ngSubmit)="addUser()">
+      <input type="text" [(ngModel)]="newUser.name" name="name" placeholder="Full Name" required>
+      <input type="email" [(ngModel)]="newUser.email" name="email" placeholder="Email" required>
+      <input type="password" [(ngModel)]="newUser.password" name="password" placeholder="Password" required>
+      <select [(ngModel)]="newUser.role" name="role">
+        <option *ngFor="let role of roles" [value]="role">{{ role | titlecase }}</option>
+      </select>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create User</button>
+        <button type="button" class="cancel-btn" (click)="showAddForm = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Current Role</th>
+        <th>Change Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td><span class="role-badge">{{ user.role }}</span></td>
+        <td>
+          <select [(ngModel)]="user.role" (change)="updateRole(user.uid, user.role)">
+            <option *ngFor="let role of roles" [value]="role">{{ role | titlecase }}</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
